@@ -1,37 +1,107 @@
-## Welcome to GitHub Pages
+## Spigot-Maven-Plugin-Tutorial
+This repository contains a basic template of a spigot plugin. Spigot's predecessor Bukkit was and is still used to code a lot of plugins for minecraft servers.
 
-You can use the [editor on GitHub](https://github.com/Pl4yingNight/Spigot-Maven-Plugin-Tutorial/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+In case you are wondering what plugins are, here's a brief explaination:
++ plugins are soly run on servers
++ you can not modify the client in any way
++ you can not influence client side settings: like the key on which the player opens his inventory
++ you can only change or modify items and functions which are already included in vanilla minecraft
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+With all that said I hope that I haven't extinguish the fire inside you because there are more than enough possibilities with plugins alone. But in case you are not satisfied you should look up **FORGE MODS** right now.
 
-### Markdown
+*Please note that I only code plugins in Eclipse, there might be some tweaks you need to do to adjust it to your platform!*
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Let's get started
+We are going to have a look at the ...
++ [Package Structure](#package-structure)
++ [Maven](#maven)
++ [Main](#main) (the Entry of the Plugin)
++ [Events](#events)
++ [Commands](#commands)
++ [plugin.yml](#plugin.yml)
++ [config.yml](#config.yml)
 
-```markdown
-Syntax highlighted code block
+### Package Structure
+After downloading the project from this repository we will first rename (refactor -> rename) the project so that it matches this naming pattern:
 
-# Header 1
-## Header 2
-### Header 3
+**\<country-code\>.\<author\>.\<plugin-name\>**
 
-- Bulleted
-- List
+***This is important because it is impossible in Java to load two plugins with the same plugin name!***
 
-1. Numbered
-2. List
+### Maven
+What is [Maven](https://maven.apache.org/): *Maven is used to manage all your dependencies and support you when compileing your java projects.*
 
-**Bold** and _Italic_ and `Code` text
+Before we start we still need to set the \<groupId\> and the \<artifactId\> as well as the \<version\>. In case we don't want the name of the plugin to be written the same way as the \<artifactId\>, we can redefine the name ourselfes by filling in the following tag: \<name\>
 
-[Link](url) and ![Image](src)
+First of all we need to add the [spigot and bungeecord repository](https://hub.spigotmc.org/nexus/#view-repositories;snapshots~browsestorage) to our pom file (pom.xml) because those libraries are not hosted on the [Maven Central](https://mvnrepository.com/repos/central) repository. For further information like integration into gradle please look up the [Spigot Help Page](https://www.spigotmc.org/wiki/spigot-maven/)
+
+```xml
+<repositories>
+    <repository>
+        <id>spigot-repo</id>
+        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+    </repository>
+    <!--Bungeecord Repo-->
+    <!--Only include if using the Spigot API dependency-->
+    <repository>
+       <id>bungeecord-repo</id>
+       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+</repositories>
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+After that we need to add the spigot and bungecord dependencies into the pom file. Please note that the dependency is scoped as *provided* because is is already contained in the spigot server when it is loaded by the server!
 
-### Jekyll Themes
+```xml
+<dependencies>
+    <!--Spigot API-->
+    <!--You only need one of the two, don't put both. Spigot is recommended.-->
+    <dependency>
+           <groupId>org.spigotmc</groupId>
+           <artifactId>spigot-api</artifactId>
+           <version>1.14.2-R0.1-SNAPSHOT</version>
+           <scope>provided</scope>
+    </dependency>
+  ...
+</dependencies>
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Pl4yingNight/Spigot-Maven-Plugin-Tutorial/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+With those two things you would have enough to start codeing but for compiling you still need a compiler! In case you set the \<name\> tag before, you can now change the \<finalName\> tag to match \<finalName\>${project.name}-${project.version}\</finalName\>
 
-### Support or Contact
+```xml
+<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
+					<finalName>${project.artifactId}-${project.version}</finalName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+```
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+To compile you should run maven with following goals in order:
+1. compile
+2. assembly:single
