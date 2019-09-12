@@ -66,40 +66,40 @@ After that we need to add the spigot and bungecord dependencies into the pom fil
 </dependencies>
 ```
 
-With those two things you would have enough to start codeing but for compiling you still need a compiler! In case you set the \<name\> tag before, you can now change the \<finalName\> tag to match \<finalName\>${project.name}-${project.version}\</finalName\>
+With those two things you would have enough to start codeing but for compiling you still need a compiler! In case you set the *\<name\>* tag before, you can now change the *\<finalName\>* tag to match *\<finalName\>${project.name}-${project.version}\</finalName\>*
 
 ```xml
 <build>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<appendAssemblyId>false</appendAssemblyId>
-					<finalName>${project.artifactId}-${project.version}</finalName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<sourceDirectory>src/main/java</sourceDirectory>
+	<plugins>
+		<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<executions>
+				<execution>
+					<phase>package</phase>
+					<goals>
+						<goal>single</goal>
+					</goals>
+				</execution>
+			</executions>
+			<configuration>
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>
+				<appendAssemblyId>false</appendAssemblyId>
+				<finalName>${project.artifactId}-${project.version}</finalName>
+			</configuration>
+		</plugin>
+		<plugin>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.7.0</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
 ```
 
 To compile you should run maven with following goals in order:
