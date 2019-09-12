@@ -37,16 +37,16 @@ First of all we need to add the [spigot and bungeecord repository](https://hub.s
 
 ```xml
 <repositories>
-    <!--Spigot Repo-->
-    <repository>
-        <id>spigot-repo</id>
-        <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
-    <!--Bungeecord Repo-->
-    <repository>
-       <id>bungeecord-repo</id>
-       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
+	<!--Spigot Repo-->
+	<repository>
+		<id>spigot-repo</id>
+		<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+	</repository>
+	<!--Bungeecord Repo-->
+	<repository>
+		<id>bungeecord-repo</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	</repository>
 </repositories>
 ```
 
@@ -54,14 +54,13 @@ After that we need to add the spigot and bungecord dependencies into the pom fil
 
 ```xml
 <dependencies>
-    <!--Spigot API-->
-    <!--You only need one of the two, don't put both. Spigot is recommended.-->
-    <dependency>
-           <groupId>org.spigotmc</groupId>
-           <artifactId>spigot-api</artifactId>
-           <version>1.14.2-R0.1-SNAPSHOT</version>
-           <scope>provided</scope>
-    </dependency>
+	<!--Spigot API-->
+	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot-api</artifactId>
+		<version>1.14.2-R0.1-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
   ...
 </dependencies>
 ```
