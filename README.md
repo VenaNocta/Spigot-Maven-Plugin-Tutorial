@@ -37,12 +37,12 @@ First of all we need to add the [spigot and bungeecord repository](https://hub.s
 
 ```xml
 <repositories>
+    <!--Spigot Repo-->
     <repository>
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <!--Bungeecord Repo-->
-    <!--Only include if using the Spigot API dependency-->
     <repository>
        <id>bungeecord-repo</id>
        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
