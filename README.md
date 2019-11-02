@@ -2,7 +2,7 @@
 This repository contains a basic template of a spigot plugin. Spigot's predecessor Bukkit was and is still used to code a lot of plugins for minecraft servers.
 
 In case you are wondering what plugins are, here's a brief explaination:
-+ plugins are soly run on servers
++ plugins are only run on servers
 + you can not modify the client in any way
 + you can not influence client side settings: like the key on which the player opens his inventory
 + you can only change or modify items and functions which are already included in vanilla minecraft
