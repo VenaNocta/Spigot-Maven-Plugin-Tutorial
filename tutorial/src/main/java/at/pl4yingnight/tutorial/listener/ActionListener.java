@@ -1,6 +1,7 @@
 package at.pl4yingnight.tutorial.listener;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
@@ -15,12 +16,12 @@ public class ActionListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
     
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onSleep(PlayerBedEnterEvent event) {
     	event.getPlayer().sendMessage("Good night!");
     }
     
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onWakeup(PlayerBedLeaveEvent event) {
     	event.getPlayer().sendMessage("Good morning!");
     }

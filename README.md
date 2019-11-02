@@ -104,3 +104,105 @@ With those two things you would have enough to start codeing but for compiling y
 To compile you should run maven with following goals in order:
 1. compile
 2. assembly:single
+
+### Main
+The Main class is the heart of the plugin and has to extend the JavaPlugin class which is provided by Bukkit (included in Spigot).
+
+The spigot server will go through multiple stages while starting and stopping. You can tap into those stages with three basic Methods: `onLoad()`, `onEnable()`, `onDisable()`.
+
+The methods should be used accordingly:
+Method|Stage|Usage
+---|---|---
+onLoad|loading|initialize the plugin
+onEnable|starting|connect to dependencies & register event handlers
+onDisable|stoping|save all data
+
+Although it has to be said that it is common to ignore the **onLoad** method and do all starting procedures in the **onEnable** method because it does not make any real difference as long as there are no dependencies which need your plugin to exist.
+
+Additionally at the end of each method you should log the state of the plugin! This is done with the `getLogger().info(<msg>);` method. You can also log warnings with the following method: `getLogger().warning(<msg>);`
+
+```java
+public class Main extends JavaPlugin{
+
+	private static Main plugin;
+
+	@Override
+	public void onLoad() {
+		plugin = this;
+
+		getLogger().info("Loaded");
+	}
+
+	@Override
+	public void onEnable() {
+
+		new ActionListener(this);
+
+		getCommand("hello").setExecutor(new HelloWorldCommandExecutor());
+
+		getLogger().info("Enabled");
+	}
+
+	@Override
+	public void onDisable() {
+
+
+		getLogger().info("Disabled");
+	}
+
+	public static org.bukkit.plugin.Plugin getPlugin() {
+		return plugin;
+	}
+}
+```
+
+Finally you still need to inform the spigot server where the main class is. This has to be done in the [plugin.yml](#plugin.yml).
+
+### Events
+Events get handled through Listeners this classes have to implement the Listener interface which is provided by Bukkit (included in Spigot).
+
+Theres a pattern which is common with Events where you register the listener in the constructor:
+```java
+public class ActionListener implements Listener {
+
+	private Plugin plugin;
+
+    public ActionListener(Plugin plugin) {
+    	this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+    }
+}
+```
+*In case you don't want to do it in the Listener you can fully use the onLoad and the onEnable methods in the Main class where you call the constructor in the onLoad method and register the listener in the onEnable method.*
+
+The events are handled in methods which can have any name but usually stat with 'on' and follow with a description of the event like 'onSleep'. This Methods must have the ***@EventHandler*** annotation and the event as a parameter.
+
+Some events can be cancelled like most of the player related events by seting the **canceled** state to **true**: `event.setCancelled(true);`
+
+In case you have multiple methods which use the same events you can assign a **priority** to them. If you don't set a priority the priority **NORMAL** is assigned.
+
+Furthermore you can define if the method should also get called when the event is already cancelled. You can do this by seting the **ignoreCancelled** state to **true**. If not assigned the state is set to false.
+
+#### Example
+Lets send the player messages when he goes to sleep and when he wakes up:
+```java
+public class ActionListener implements Listener {
+
+	private Plugin plugin;
+
+    public ActionListener(Plugin plugin) {
+    	this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onSleep(PlayerBedEnterEvent event) {
+    	event.getPlayer().sendMessage("Good night!");
+    }
+
+    @EventHandler
+    public void onWakeup(PlayerBedLeaveEvent event) {
+    	event.getPlayer().sendMessage("Good morning!");
+    }
+}
+```

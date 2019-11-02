@@ -1,1 +1,4 @@
 plugin.yml
+at\pl4yingnight\tutorial\Main.class
+at\pl4yingnight\tutorial\commands\HelloWorldCommandExecutor.class
+at\pl4yingnight\tutorial\listener\ActionListener.class

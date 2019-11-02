@@ -20,6 +20,7 @@ public class Main extends JavaPlugin{
 	
 	@Override
 	public void onLoad() {
+		// initialize the plugin
 		plugin = this;
 		
 		getLogger().info("Loaded");
@@ -27,7 +28,7 @@ public class Main extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
-		
+		// register event handlers
 		new ActionListener(this);
 		
 		getCommand("hello").setExecutor(new HelloWorldCommandExecutor());
