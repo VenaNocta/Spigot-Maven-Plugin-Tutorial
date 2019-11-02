@@ -206,3 +206,25 @@ public class ActionListener implements Listener {
     }
 }
 ```
+
+### Commands
+Commands get handled through commandexecutors this classes have to implement the CommandExecutor interface which is provided by Bukkit (included in Spigot). You should create one commandexecutor per command!
+
+You the `onCommand(...)` method has to return a Boolean it should be **true** if the command was executed **successfully** and **false** if there have been **errors**. In the case of errors Spigot will inform the CommandSender that something has gone wrong.
+
+In the example we will greet the CommandSender if it is a Player:
+```java
+public class HelloWorldCommandExecutor implements CommandExecutor {
+
+	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
+
+		if (sender instanceof Player)
+			sender.sendMessage("Hello " + sender.getName() + " to Minecraft!");
+		else
+			sender.sendMessage("Hello Minecraft!");
+		return true;
+	}
+}
+```
+
+For commands to get properly displayed in the help page you still need to describe them in the [plugin.yml](#plugin.yml).
