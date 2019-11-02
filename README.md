@@ -111,6 +111,7 @@ The Main class is the heart of the plugin and has to extend the JavaPlugin class
 The spigot server will go through multiple stages while starting and stopping. You can tap into those stages with three basic Methods: `onLoad()`, `onEnable()`, `onDisable()`.
 
 The methods should be used accordingly:
+
 Method|Stage|Usage
 ---|---|---
 onLoad|loading|initialize the plugin
